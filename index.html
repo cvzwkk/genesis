@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cosmic Evolution Lab â€” Vacuum to Solar System</title>
+    <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div id="left" class="panel">
+    <h1>Cosmic Evolution Lab</h1>
+    <div class="sub">
+      Step-by-step cosmology from vacuum fluctuations to galaxies, the Milky Wayâ€“Andromeda merger, and the Solar System.
+      This version is <strong>more physically grounded</strong>, but still a simplified simulator. It uses approximations from inflation, expansion, softened gravity, collapse thresholds, and accretion-limited black holes.
+    </div>
+
+    <h2>Timeline</h2>
+    <div class="grid2">
+      <button id="playBtn">Play</button>
+      <button id="pauseBtn">Pause</button>
+      <button id="nextBtn">Next stage</button>
+      <button id="resetBtn">Reset</button>
+    </div>
+
+    <div class="phaseList">
+      <button class="phaseBtn" data-phase="0">0. Vacuum state</button>
+      <button class="phaseBtn" data-phase="1">1. Quantum fluctuations</button>
+      <button class="phaseBtn" data-phase="2">2. Inflation</button>
+      <button class="phaseBtn" data-phase="3">3. Hot plasma / Big Bang aftermath</button>
+      <button class="phaseBtn" data-phase="4">4. Recombination / structure seeds</button>
+      <button class="phaseBtn" data-phase="5">5. First stars and black-hole seeds</button>
+      <button class="phaseBtn" data-phase="6">6. Galaxies form</button>
+      <button class="phaseBtn" data-phase="7">7. Milky Way and Andromeda</button>
+      <button class="phaseBtn" data-phase="8">8. Collision and merger remnant</button>
+      <button class="phaseBtn" data-phase="9">9. Solar System focus</button>
+    </div>
+
+    <h2>Controls</h2>
+    <div class="row"><span>Simulation speed</span><strong id="speedVal">1.0Ã—</strong></div>
+    <input type="range" id="speed" min="0.2" max="5" step="0.1" value="1">
+
+    <div class="row"><span>Vacuum fluctuation amplitude</span><strong id="fluctVal">0.20</strong></div>
+    <input type="range" id="fluct" min="0.05" max="1.00" step="0.01" value="0.20">
+
+    <div class="row"><span>Expansion strength</span><strong id="expandVal">1.00</strong></div>
+    <input type="range" id="expand" min="0.4" max="2.0" step="0.01" value="1.00">
+
+    <div class="row"><span>Gravity strength</span><strong id="gravityVal">1.00</strong></div>
+    <input type="range" id="gravity" min="0.2" max="2.0" step="0.01" value="1.00">
+
+    <div class="row"><span>Accretion efficiency</span><strong id="accretionVal">0.10</strong></div>
+    <input type="range" id="accretion" min="0.02" max="0.30" step="0.01" value="0.10">
+
+    <div class="row"><span>Projection mode</span><strong id="projectionLabel">3D</strong></div>
+    <div class="grid3">
+      <button id="proj3Btn">3D</button>
+      <button id="proj4Btn">4D</button>
+      <button id="proj5Btn">5D</button>
+    </div>
+
+    <div class="row"><span>Extra-dimension W</span><strong id="wVal">0.50</strong></div>
+    <input type="range" id="wSlider" min="0" max="1" step="0.01" value="0.50">
+
+    <div class="row"><span>Extra-dimension Q</span><strong id="qVal">0.50</strong></div>
+    <input type="range" id="qSlider" min="0" max="1" step="0.01" value="0.50">
+
+    <div class="grid2" style="margin-top:10px">
+      <button id="viewUniverseBtn">View universe</button>
+      <button id="viewSolarBtn">View Solar System</button>
+      <button id="collisionBtn" class="wide">Simulate Milky Way + Andromeda collision</button>
+    </div>
+
+    <div id="status" class="status"></div>
+
+    <div class="small" style="margin-top:10px">
+      4D/5D here means <strong>projected extra variables</strong>, not a literal higher-dimensional universe rendering.
+      W and Q control how hidden state (energy scale, curvature proxy, collapse tendency) is projected into color, radius, opacity, and depth.
+    </div>
+  </div>
+
+  <div id="right" class="panel">
+    <h2>Physical notes</h2>
+    <div class="small">
+      <div><span class="badge">Vacuum energy</span><span class="badge">Gaussian fluctuations</span><span class="badge">Scale factor a(t)</span></div>
+      <div><span class="badge">Softened gravity</span><span class="badge">Collapse threshold</span><span class="badge">Eddington-like cap</span></div>
+      <div><span class="badge">Schwarzschild radius proxy</span><span class="badge">Tidal streams</span><span class="badge">Merger remnant</span></div>
+    </div>
+
+    <h3>Live metrics</h3>
+    <div class="metric"><span>Stage</span><span class="value" id="metricStage">Vacuum state</span></div>
+    <div class="metric"><span>Cosmic scale factor a(t)</span><span class="value" id="metricScale">1.000</span></div>
+    <div class="metric"><span>Temperature proxy</span><span class="value" id="metricTemp">0.000</span></div>
+    <div class="metric"><span>Macro particles</span><span class="value" id="metricParticles">0</span></div>
+    <div class="metric"><span>Galaxies</span><span class="value" id="metricGalaxies">0</span></div>
+    <div class="metric"><span>Black holes</span><span class="value" id="metricBHs">0</span></div>
+    <div class="metric"><span>Black-hole accretion rate</span><span class="value" id="metricAccretion">0.000</span></div>
+    <div class="metric"><span>Stars consumed</span><span class="value" id="metricConsumed">0</span></div>
+    <div class="metric"><span>Merger remnant type</span><span class="value" id="metricRemnant">â€”</span></div>
+    <div class="metric"><span>Local target</span><span class="value" id="metricTarget">Universe</span></div>
+
+    <h3>Milky Wayâ€“Andromeda function</h3>
+    <div class="small">
+      The function <code>simulateMilkyWayAndromedaCollision()</code> sets relative velocities, enables tidal mixing, boosts starburst activity, and transitions the pair toward a larger merger remnant resembling the expected future elliptical-like system.
+    </div>
+
+    <h3>Important limitation</h3>
+    <div class="small">
+      This is not a general-relativistic or quantum-field-theory solver. It is a physically informed visual toy model:
+      it preserves boundaries, thresholds, and directional behavior from known laws, while keeping the numerics lightweight enough for a browser.
+    </div>
+  </div>
+
+  <div id="bottom" class="panel">
+    Use the phase buttons to walk from empty vacuum â†’ fluctuations â†’ inflation â†’ hot plasma â†’ recombination â†’ first stars â†’ galaxies â†’ Milky Way and Andromeda â†’ collision â†’ Solar System. Drag with the mouse to orbit the camera; wheel to zoom.
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
